@@ -24,19 +24,24 @@ cd frontend && npm install && npm run dev
 Visit http://localhost:5173
 
 ### Deploy to Databricks
-```bash
-# Build frontend
-cd frontend && npm run build && cd ..
 
-# Create app
+**Important:** The `.databricksignore` file automatically excludes `node_modules` and other unnecessary files from deployment.
+
+```bash
+# 1. Build frontend in Databricks notebook (upload build_frontend.py)
+# Run build_frontend.py notebook in your Databricks workspace
+
+# 2. Create app
 databricks apps create weather-prediction-app -p your-profile
 
-# Deploy
-databricks sync . /Users/you@company.com/weather-prediction-app --exclude node_modules --exclude .venv -p your-profile
+# 3. Sync code to workspace (excludes node_modules via .databricksignore)
+databricks workspace import-dir . /Workspace/Users/you@company.com/weather-prediction-app -p your-profile
+
+# 4. Deploy
 databricks apps deploy weather-prediction-app --source-code-path /Workspace/Users/you@company.com/weather-prediction-app -p your-profile
 ```
 
-Add Foundation Model resource via UI, then redeploy.
+**Note:** The app.yaml includes Foundation Model resource configuration. No manual resource addition needed!
 
 ## Tech Stack
 - Backend: FastAPI + Python
