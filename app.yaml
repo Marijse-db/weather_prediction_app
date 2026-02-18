@@ -1,0 +1,24 @@
+command:
+  - "python"
+  - "-m"
+  - "uvicorn"
+  - "app:app"
+  - "--host"
+  - "0.0.0.0"
+  - "--port"
+  - "8000"
+
+env:
+  # Foundation Model endpoint
+  - name: SERVING_ENDPOINT
+    value: databricks-claude-sonnet-4-5
+
+  # Weather API (optional - uses free tier if not set)
+  # - name: OPENWEATHER_API_KEY
+  #   value: your-api-key-here
+
+resources:
+  - name: foundation-model
+    serving_endpoint:
+      name: databricks-claude-sonnet-4-5
+      permission: CAN_QUERY
