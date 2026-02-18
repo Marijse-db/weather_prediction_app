@@ -24,7 +24,7 @@
 # COMMAND ----------
 
 # Set your repo path - UPDATE THIS!
-REPO_PATH = "/Workspace/Repos/marijse.vandenberg@databricks.com/weather_prediction_app"
+REPO_PATH = "/Workspace/Users/marijse.vandenberg@databricks.com/weather_prediction_app"
 
 # Verify the repo exists
 import os
