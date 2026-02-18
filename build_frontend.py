@@ -264,15 +264,22 @@ else:
 
 # COMMAND ----------
 
+# DBTITLE 1,Cell 17
 import shutil
 import os
 
 dist_path = os.path.join(REPO_PATH, "frontend", "dist")
 zip_path = "/dbfs/tmp/weather-app-dist"
 
-if os.path.exists(dist_path):
+if os.path.exists(dist_path) and os.access(dist_path, os.R_OK):
     # Create zip file
-    shutil.make_archive(zip_path, 'zip', dist_path)
+    import zipfilewith zipfile.ZipFile(f'{zip_path}.zip', 'w', zipfile.ZIP_DEFLATED) as zipf:
+    for root, dirs, files in os.walk(dist_path):
+        for file in files:
+            file_path = os.path.join(root, file)
+            arcname = os.path.relpath(file_path, dist_path)
+            zipf.write(file_path, arcname)
+
 
     zip_file = f"{zip_path}.zip"
     if os.path.exists(zip_file):
@@ -382,3 +389,15 @@ else:
 # MAGIC - Created zip file for download
 # MAGIC
 # MAGIC 🚀 **Your Weather Prediction App is ready to deploy!**
+
+# COMMAND ----------
+
+# MAGIC %sh
+# MAGIC databricks apps create weather-prediction-app
+# MAGIC databricks apps deploy weather-prediction-app \
+# MAGIC   --source-code-path /Workspace/Users/marijse.vandenberg@databricks.com/weather_prediction_app
+# MAGIC
+
+# COMMAND ----------
+
+
